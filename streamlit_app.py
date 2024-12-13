@@ -71,7 +71,42 @@ def display_json_data():
 import importlib
 
 
-def handle_visualisation(viz_type,**kwargs):
+# def handle_visualisation(viz_type,kwargs):
+#     """
+#     Dynamically find and invoke a function in 'visualisations.py' based on the given `viz_type`.
+#
+#     Parameters:
+#         viz_type (str): The name of the visualization function to call.
+#         *args: Positional arguments to pass to the visualization function.
+#         **kwargs: Keyword arguments to pass to the visualization function.
+#
+#     Returns:
+#         The result of the visualization function, or an error message if not found.
+#     """
+#     print("hello" + viz_type)
+#     try:
+#         # Dynamically import the visualisations module
+#         visualisations = importlib.import_module("visualisations")
+#
+#         # Check if the function exists in the module
+#         if hasattr(visualisations, viz_type):
+#             # Fetch the function based on viz_type
+#             print("hello first" + kwargs)
+#             visualization_function = getattr(visualisations, viz_type)
+#             # Call the function and return the result
+#             print("hello" + kwargs)
+#             return visualization_function(kwargs)
+#         #     add a return later
+#         else:
+#             print("he;lp")
+#             raise AttributeError(f"No visualization function named '{viz_type}' found in 'visualisations.py'.")
+#     except ModuleNotFoundError:
+#         return "Error: 'visualisations.py' module not found."
+#     except AttributeError as e:
+#         return str(e)
+#     except Exception as e:
+#         return f"An unexpected error occurred: {str(e)}"
+def handle_visualisation(viz_type,kwargs):
     """
     Dynamically find and invoke a function in 'visualisations.py' based on the given `viz_type`.
 
@@ -83,6 +118,7 @@ def handle_visualisation(viz_type,**kwargs):
     Returns:
         The result of the visualization function, or an error message if not found.
     """
+    print("hello" + viz_type)
     try:
         # Dynamically import the visualisations module
         visualisations = importlib.import_module("visualisations")
@@ -90,17 +126,14 @@ def handle_visualisation(viz_type,**kwargs):
         # Check if the function exists in the module
         if hasattr(visualisations, viz_type):
             # Fetch the function based on viz_type
+            print("hello first" + kwargs)
             visualization_function = getattr(visualisations, viz_type)
             # Call the function and return the result
-            # print(**args)
-            # print(visualization_function)
-            # print(
-            #     f"Calling visualization function '{viz_type}' with args: {args}"
-            # )
-            print(kwargs)
-            print(visualization_function(kwargs))
-            return visualization_function(kwargs)
+            result = visualization_function(**kwargs)
+            return result
+        #     add a return later
         else:
+            print("he;lp")
             raise AttributeError(f"No visualization function named '{viz_type}' found in 'visualisations.py'.")
     except ModuleNotFoundError:
         return "Error: 'visualisations.py' module not found."
@@ -183,9 +216,11 @@ if st.button("test visualisations"):
     # print(filtered_params)
     print("viz_type is:" + viz_type)
     print(filtered_params)
-    handle_visualisation(viz_type,filtered_params)
+    data = sample_data['data']
+    x_col = sample_data['x_col']
+    y_col = sample_data['y_col']
 
-    handle_visualisation()
+    handle_visualisation(viz_type,filtered_params)
 
 
 if st.session_state.generated_visualisation != "":
